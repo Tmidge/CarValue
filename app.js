@@ -13,17 +13,17 @@ app.use(bodyParser.urlencoded({
 const postCarValue = {
   originalValue: expressJoi.Joi.types.Number().positive().required(),
   modelYear: expressJoi.Joi.types.Number().positive().integer().min(1885).max(new Date().getFullYear() + 1).required(),
-  miles: expressJoi.Joi.types.Number().positive().integer().required(),
+  miles: expressJoi.Joi.types.Number().integer().min(0).required(),
   previousOwners: expressJoi.Joi.types.Number().integer().min(0).required(),
-  collisions: expressJoi.Joi.types.Number().positive().integer().required()
+  collisions: expressJoi.Joi.types.Number().integer().min(0).required()
 };
 
 app.get('/', (req, res) => res.send(`Please include the following data: {
   originalValue: Positive number,
-  modelYear: Positive integer betwen 1885-9999,
-  miles: Positive integer,
-  previousOwners: Positive integer,
-  collisions: Positive integer
+  modelYear: Positive integer betwen 1885 and the current year plus one,
+  miles: Integer greater than 0,
+  previousOwners: Integer greater than 0,
+  collisions: Integer greater than 0
 }`));
 
 app.post('/', expressJoi.joiValidate(postCarValue), determineValue);
